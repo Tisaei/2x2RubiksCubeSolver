@@ -4,7 +4,7 @@
 #include <string.h>
 #include <time.h>
 
-// 参照↓
+// 参照↓ (PDFファイルがダウンロードされる)
 // https://uec.repo.nii.ac.jp/?action=repository_action_common_download&item_id=6803&item_no=1&attribute_id=20&file_no=1
 
 #define SIZE_OF_ARRAY(array) (sizeof(array)/sizeof(array[0]))

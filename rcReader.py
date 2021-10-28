@@ -194,6 +194,8 @@ def read_all():
 	rm.Zd_move(0)
 	rm.Yd_move(ayd_angle)
 
+	# state_cp, state_coが何なのかについては以下を参照.
+	# https://qiita.com/7y2n/items/a840e44dba77b1859352
 	for i in range(8):
 		if state_co[i] == -1:
 			brick.display.clear()

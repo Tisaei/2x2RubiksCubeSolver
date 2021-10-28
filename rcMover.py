@@ -167,49 +167,49 @@ def execute(way):
 		except KeyError:
 			break
 
-def Dd_move(target):
+def Dd_move(target): #D
 	reset_motor()
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+90, Stop.HOLD)
 	return target + 90
 
-def D2_move(target):
+def D2_move(target): #D2
 	reset_motor()
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+180, Stop.HOLD)
 	return target + 180
 
-def Dc_move(target):
+def Dc_move(target): #D'
 	reset_motor()
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+270, Stop.HOLD)
 	return target + 270
 
-def Yd_move(target):
+def Yd_move(target): #Y
 	target_motor(180)
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S,target + 270,Stop.HOLD)
 	return target + 270
 
-def Y2_move(target):
+def Y2_move(target): #Y2
 	target_motor(180)
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+180, Stop.HOLD)
 	return target + 180
 
-def Yc_move(target):
+def Yc_move(target): #Y'
 	target_motor(180)
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+90, Stop.HOLD)
 	return target + 90
 
-def Zd_move(target):
+def Zd_move(target): #Z
 	target_motor(180)
 	amotor.run_angle(S,-120,Stop.HOLD)
 	reset_motor()
 	return target
 
-def Z2_move(target):
+def Z2_move(target): #Z2
 	target_motor(180)
 	amotor.run_angle(S,-120,Stop.HOLD)
 	reset_motor()
@@ -218,7 +218,7 @@ def Z2_move(target):
 	reset_motor()
 	return target
 
-def Zc_move(target):
+def Zc_move(target): #Z'
 	target_motor(180)
 	amotor.run_angle(S,-120,Stop.HOLD)
 	reset_motor()
