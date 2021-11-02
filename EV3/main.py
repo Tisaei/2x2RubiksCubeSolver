@@ -8,13 +8,12 @@ state_path = 'cube_state_perori.txt'
 way_path = 'solve_way.txt'
 
 def main():
-	# run(['./rcReader.py'])
-	# f = open(readColor_path, 'r')
-	# color_data = f.read()
-	# f.close()
-	color_data = 'Test Color Data'
+	run(['./rcReader.py'])
+	f = open(readColor_path, 'r')
+	color_data = f.read()
+	f.close()
 	with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-		s.connect(('XXX.XXX.XXX.XXX', 50010))
+		s.connect(('169.254.227.203', 50010))
 		s.send(color_data.encode('UTF-8'))
 		recv_data = s.recv(4096).decode()
 		print('"' + recv_data + '" from PC(server).')
