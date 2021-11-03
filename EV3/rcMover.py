@@ -1,7 +1,7 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks import ev3brick as brick
 from pybricks.ev3devices import Motor, TouchSensor, ColorSensor
-from pybricks.parameters import Port, Stop, SoundFile, Button, Color
+from pybricks.parameters import Direction, Port, Stop, SoundFile, Button, Color
 from pybricks.tools import wait
 from pybricks.tools import print
 import re
@@ -28,7 +28,7 @@ hG = 783.991
 # https://tribox.com/3x3x3/solution/notation/
 
 amotor = Motor(Port.A)
-bmotor = Motor(Port.B)
+bmotor = Motor(Port.B, Direction.COUNTERCLOCKWISE)
 cmotor = Motor(Port.C)
 S = 180 #モーターの回るスピード.
 L = 40  #run_until_stalledメソッドを実行するときのトルクの強さ.
@@ -37,7 +37,7 @@ def nsign(num):
 
 def reset_motor():
 	amotor.run_until_stalled(S,Stop.HOLD,L)
-	amotor.reset_angle(270)
+	amotor.reset_angle(270) # マシンVer.3.0の時.
 def target_motor(num):
 	nsi = nsign(amotor.angle() - num)
 	if nsi != 0:
@@ -84,6 +84,7 @@ def direction_change(pre_per_ori, rotate_side):
 			return ("Y3 Z", doZ(doY(doY(doY(pre_per_ori)))))
 
 def change_direction_to_0and0(pre_per_ori):
+	# 入力のper_oriを(0,0b00)にするための動きを返す.
 	change_way = ""
 	if pre_per_ori[0] == 0 or pre_per_ori[0] == 1:
 		temp_per_ori = pre_per_ori
@@ -167,66 +168,66 @@ def execute(way):
 		except KeyError:
 			break
 
-def Dd_move(target): #D
+def Dd_move(target): # D
 	reset_motor()
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+90, Stop.HOLD)
 	return target + 90
 
-def D2_move(target): #D2
+def D2_move(target): # D2
 	reset_motor()
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+180, Stop.HOLD)
 	return target + 180
 
-def Dc_move(target): #D'
+def Dc_move(target): # D'
 	reset_motor()
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+270, Stop.HOLD)
 	return target + 270
 
-def Yd_move(target): #Y
-	target_motor(180)
+def Yd_move(target): # Y
+	target_motor(200) # マシンVer.3.0の時.
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S,target + 270,Stop.HOLD)
 	return target + 270
 
-def Y2_move(target): #Y2
-	target_motor(180)
+def Y2_move(target): # Y2
+	target_motor(200) # マシンVer.3.0の時.
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+180, Stop.HOLD)
 	return target + 180
 
-def Yc_move(target): #Y'
-	target_motor(180)
+def Yc_move(target): # Y'
+	target_motor(200) # マシンVer.3.0の時.
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+90, Stop.HOLD)
 	return target + 90
 
-def Zd_move(target): #Z
+def Zd_move(target): # Z
 	target_motor(180)
-	amotor.run_angle(S,-120,Stop.HOLD)
+	amotor.run_angle(S,-90,Stop.HOLD)
 	reset_motor()
 	return target
 
-def Z2_move(target): #Z2
+def Z2_move(target): # Z2
 	target_motor(180)
-	amotor.run_angle(S,-120,Stop.HOLD)
+	amotor.run_angle(S,-90,Stop.HOLD)
 	reset_motor()
 	target_motor(180)
-	amotor.run_angle(S,-120,Stop.HOLD)
+	amotor.run_angle(S,-90,Stop.HOLD)
 	reset_motor()
 	return target
 
 def Zc_move(target): #Z'
 	target_motor(180)
-	amotor.run_angle(S,-120,Stop.HOLD)
+	amotor.run_angle(S,-90,Stop.HOLD)
 	reset_motor()
 	target_motor(180)
-	amotor.run_angle(S,-120,Stop.HOLD)
+	amotor.run_angle(S,-90,Stop.HOLD)
 	reset_motor()
 	target_motor(180)
-	amotor.run_angle(S,-120,Stop.HOLD)
+	amotor.run_angle(S,-90,Stop.HOLD)
 	reset_motor()
 	return target
 
