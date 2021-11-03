@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import numpy as np
-from kmeanspp import KMeans_pp
 
 def String_to_3d_Ndarray(string_data):
 	string_data = string_data.strip()
@@ -32,17 +31,22 @@ def Identify_Color_of_UFR(cube_color_source, color_of_DBL_dict):
 	
 	return color_of_UFR_dict
 
+from kmeanspp import KMeans_pp
+import copy
 def Clustering_Main(color_data_string):
 	RGB_data = String_to_3d_Ndarray(color_data_string)
 
+	print('Clustering... ', end='')
 	n_cluster = 6
 	model = KMeans_pp(n_cluster)
 	model.fit(RGB_data)
 	cube_color = model.labels_.reshape((-1, 3)).tolist()
+	print('Conmplete!')
+	print(model.labels_.reshape((-1, 3)))
 
 	DLB_keys = ['D', 'B', 'L']
-	color_of_DBL_dict = dict(zip(DLB_keys, cube_color[4].tolist()))
-	color_of_UFR_dict = Identify_Color_of_UFR(cube_color.tolist(), color_of_DBL_dict)
+	color_of_DBL_dict = dict(zip(DLB_keys, cube_color[4]))
+	color_of_UFR_dict = Identify_Color_of_UFR(copy.deepcopy(cube_color), color_of_DBL_dict)
 	color_of_Side_dict = {**color_of_UFR_dict, **color_of_DBL_dict}
 
 	part_sets = {

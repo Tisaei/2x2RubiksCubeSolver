@@ -85,12 +85,6 @@ int main(int argc, char *argv[]){
 		initCube.co[i] = atoi(coS[i]);
 	}
 
-	printf("cp : ");
-	print_array(initCube.cp, CPCO_NUM);
-	printf("  co : ");
-	print_array(initCube.co, CPCO_NUM);
-	printf("\n");
-
 	char* ways = solve(initCube);
 	printf("Result : %s\n", ways);
 	FILE* fp = fopen(path, "w");
@@ -167,7 +161,7 @@ const int limitedMoveN[] = {
 	SIZE_OF_ARRAY(NPreMoveList)
 };
 
-int search_gvdfxbctree(const state_t cube, int searchDepth, int result[MAX_DEPTH]){
+int search_tree(const state_t cube, int searchDepth, int result[MAX_DEPTH]){
 	searchNode_t* pNode;
 	searchNode_t nodeArray[MAX_DEPTH + 1];
 	int tw;

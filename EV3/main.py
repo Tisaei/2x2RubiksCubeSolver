@@ -24,13 +24,23 @@ def main():
 	cp_str = ','.join(map(str, cp))
 	co_str = ','.join(map(str, co))
 	per_ori_str = ','.join(map(str, per_ori))
+	print('cp:', cp_str, ' co:', co_str)
+	judgment = input('continue? [y/n]')
+	if judgment != 'y':
+		return
 
+	print('Solving... ')
 	run(['./rcSolver.out', cp_str, co_str])
 	# runメソッドはサブプロセスが終わるまで待ってくれる.
 	# この後solve_way.txtから解法を読み取ってaftersolve.pyを実行.
+	print('Complete!')
 	with open(way_path) as f:
 		ways = f.read()
 	run(['./afterSolve.py', ways, per_ori_str])
 
 if __name__ == '__main__':
-	main()
+	while True:
+		judgment = input('Ready. Solve? [y/n]')
+		if judgment != 'y':
+			break
+		main()

@@ -32,11 +32,12 @@ bmotor = Motor(Port.B, Direction.COUNTERCLOCKWISE)
 cmotor = Motor(Port.C)
 S = 180 #モーターの回るスピード.
 L = 40  #run_until_stalledメソッドを実行するときのトルクの強さ.
+
 def nsign(num):
     return -1 * ((num > 0) - (num < 0))
 
-def reset_motor():
-	amotor.run_until_stalled(S,Stop.HOLD,L)
+def reset_motor(torque):
+	amotor.run_until_stalled(S,Stop.HOLD,torque)
 	amotor.reset_angle(270) # マシンVer.3.0の時.
 def target_motor(num):
 	nsi = nsign(amotor.angle() - num)
@@ -133,22 +134,23 @@ def UFR_to_DYZ(UFR_ways, now_po): #now_po = now_per_ori
 	return DYZ_ways.strip()
 
 def main():
-	brick.sound.beep(dC,300,50)
-	wait(700)
-	brick.sound.beep(dC,300,50)
-	wait(700)
-	brick.sound.beep(dC,300,50)
-	wait(700)
-	brick.sound.beep(hC,1000.50)
+	brick.sound.beep(dC,150,50)
+	wait(350)
+	brick.sound.beep(dC,150,50)
+	wait(350)
+	brick.sound.beep(dC,150,50)
+	wait(350)
+	brick.sound.beep(hC,200.50)
 	cmotor.run_until_stalled(-S,Stop.COAST,50)
-	reset_motor()
-	way = "Z2 D2 Z D2 Y Z D3 Y Z D2 Z3 D3 Z D Z D2 Z D3 Y2 Z D"
-	#      8  2  7 2  4 7 3  4 7 2  9  3  7 3 7 2  7 3  5  7 1
-	w_r = "D3 Z3 Y2 D Z3 D2 Z3 D3 Z3 D Z D2 Z3 Y3 D Z3 Y3 D2 Z3 D2 Z2"
+	reset_motor(L)
+	# way = "Z2 D2 Z D2 Y Z D3 Y Z D2 Z3 D3 Z D Z D2 Z D3 Y2 Z D"
+	# #      8  2  7 2  4 7 3  4 7 2  9  3  7 3 7 2  7 3  5  7 1
+	# w_r = "D3 Z3 Y2 D Z3 D2 Z3 D3 Z3 D Z D2 Z3 Y3 D Z3 Y3 D2 Z3 D2 Z2"
+	way = 'D2 Z2 D2 Y Z D2 Z2 D2'
 	execute(way)
 
 def execute(way):
-	reset_motor()
+	reset_motor(L)
 	bmotor.reset_angle(0)
 	sum_angle = 0
 	move_dict = {
@@ -168,20 +170,24 @@ def execute(way):
 		except KeyError:
 			break
 
+D_target = 245
 def Dd_move(target): # D
-	reset_motor()
+	reset_motor(L)
+	target_motor(D_target)
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+90, Stop.HOLD)
 	return target + 90
 
 def D2_move(target): # D2
-	reset_motor()
+	reset_motor(L)
+	target_motor(D_target)
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+180, Stop.HOLD)
 	return target + 180
 
 def Dc_move(target): # D'
-	reset_motor()
+	reset_motor(L)
+	target_motor(D_target)
 	amotor.stop(Stop.HOLD)
 	bmotor.run_target(S, target+270, Stop.HOLD)
 	return target + 270
@@ -207,28 +213,28 @@ def Yc_move(target): # Y'
 def Zd_move(target): # Z
 	target_motor(180)
 	amotor.run_angle(S,-90,Stop.HOLD)
-	reset_motor()
+	reset_motor(L)
 	return target
 
 def Z2_move(target): # Z2
 	target_motor(180)
 	amotor.run_angle(S,-90,Stop.HOLD)
-	reset_motor()
+	reset_motor(L)
 	target_motor(180)
 	amotor.run_angle(S,-90,Stop.HOLD)
-	reset_motor()
+	reset_motor(L)
 	return target
 
 def Zc_move(target): #Z'
 	target_motor(180)
 	amotor.run_angle(S,-90,Stop.HOLD)
-	reset_motor()
+	reset_motor(L)
 	target_motor(180)
 	amotor.run_angle(S,-90,Stop.HOLD)
-	reset_motor()
+	reset_motor(L)
 	target_motor(180)
 	amotor.run_angle(S,-90,Stop.HOLD)
-	reset_motor()
+	reset_motor(L)
 	return target
 
 if __name__ == '__main__':

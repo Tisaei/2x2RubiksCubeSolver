@@ -62,24 +62,14 @@ from kmeanspp import KMeans_pp
 import copy
 def main():
 	# global color_data_string
-	# color_data_string = GetColorData()
-	f = open(readColor_path, 'r')
-	color_data_string = f.read()
-	f.close()
+
+	color_data_string = GetColorData()
+	# f = open(readColor_path, 'r')
+	# color_data_string = f.read()
+	# f.close()
+
 	RGB_data = String_to_3d_Ndarray(color_data_string)
 	print(RGB_data)
-
-	# xy_data = np.array([])
-	# for datum in RGB_data:
-	#     rad = np.radians(datum[0])
-	#     xy_datum = datum[1] * np.array([np.cos(rad), np.sin(rad)])
-	#     xy_data = np.append(xy_data, xy_datum)
-	# xy_data = xy_data.reshape(RGB_data.shape)
-
-	# fig = plt.figure()
-	# ax = fig.add_subplot(111, projection='3d')
-	# ax.scatter3D(RGB_data[:, 0], RGB_data[:, 1], RGB_data[:, 2])
-	# plt.show()
 	
 	n_cluster = 6
 	model = KMeans_pp(n_cluster)
@@ -87,14 +77,14 @@ def main():
 	cube_color_ndarray = model.labels_.reshape((-1, 3))
 	print(cube_color_ndarray)
 
-	# markers = ['+', '*', '<', 'o', '1', 's', 'd']
-	# color   = ['r', 'b', 'g', 'c', 'm', 'y', 'k']
-	# fig = plt.figure()
-	# ax = fig.add_subplot(111, projection='3d')
-	# for i in range(n_cluster):
-	# 	p = RGB_data[model.labels_ == i, :]
-	# 	ax.scatter3D(p[:, 0], p[:, 1], p[:, 2], marker = markers[i], color = color[i])
-	# plt.show()
+	markers = ['+', '*', '<', 'o', '1', 's', 'd']
+	color   = ['r', 'b', 'g', 'c', 'm', 'y', 'k']
+	fig = plt.figure()
+	ax = fig.add_subplot(111, projection='3d')
+	for i in range(n_cluster):
+		p = RGB_data[model.labels_ == i, :]
+		ax.scatter3D(p[:, 0], p[:, 1], p[:, 2], marker = markers[i], color = color[i])
+	plt.show()
 
 	cube_color = cube_color_ndarray.tolist()
 	DLB_keys = ['D', 'B', 'L']

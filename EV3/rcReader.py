@@ -84,9 +84,10 @@ def RGB_to_HSV(rgb):
 	return (H, S, V)
 
 def read_all():
+	L = 40  #run_until_stalledメソッドを実行するときのトルクの強さ.
 	cmotor.run_until_stalled(-S,Stop.BRAKE,100)
 
-	rm.reset_motor()
+	rm.reset_motor(L)
 	rm.target_motor(200)
 
 	read_four((1,0), (2,0), (3,0), (0,0))

@@ -6,6 +6,7 @@ from pybricks.tools import print
 import rcMover as rm
 import sys
 args = sys.argv
+L = 40  #run_until_stalledメソッドを実行するときのトルクの強さ.
 
 #平均律周波数.
 lG = 195.998
@@ -26,8 +27,8 @@ hG = 783.991
 
 def fanfare():
 	b_motor = Motor(Port.B)
-	rm.reset_motor()
-	rm.target_motor(190)
+	rm.reset_motor(L)
+	rm.target_motor(200)
 	b_motor.run_angle(90,360)
 
 def main():
