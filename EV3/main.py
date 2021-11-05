@@ -13,14 +13,18 @@ def main():
 	f = open(readColor_path, 'r')
 	color_data = f.read()
 	f.close()
-	print(color_data)
+	print()
 	with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 		s.connect(('169.254.227.203', 50010))
 		s.send(color_data.encode('UTF-8'))
 		recv_data = s.recv(4096).decode()
 		print('"' + recv_data + '" from PC(server).')
 
-	cp, co, per_ori = cc.Clustering_Main(color_data)
+	try:
+		cp, co, per_ori = cc.Clustering_Main(color_data)
+	except Exception as e:
+		print(e)
+		return
 	cp_str = ','.join(map(str, cp))
 	co_str = ','.join(map(str, co))
 	per_ori_str = ','.join(map(str, per_ori))
@@ -40,7 +44,7 @@ def main():
 
 if __name__ == '__main__':
 	while True:
+		main()
 		judgment = input('Ready. Solve? [y/n]')
 		if judgment != 'y':
 			break
-		main()

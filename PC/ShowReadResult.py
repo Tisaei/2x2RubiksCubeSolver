@@ -4,14 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import socket
 
 np.set_printoptions(suppress=True)
-readColor_path = 'readColor.txt'
-
-# color_data_string=(
-#     '28,2.2,2.9:30,5.5,3.0:32,8.8,3.1\n'
-#     '58,22,2.9:60,55,3.0:62,88,3.1\n'
-#     '88,23,2.9:90,56,3.0:92,89,3.1\n'
-#     '118,1.2,2.9:120,4.5,3.0:122,7.8,3.1\n'
-# )
+readColor_path = 'readColor2.txt'
 
 def GetColorData():
 	color_data = ""
@@ -61,8 +54,6 @@ def Identify_Color_of_UFR(cube_color, color_of_DBL_dict):
 from kmeanspp import KMeans_pp
 import copy
 def main():
-	# global color_data_string
-
 	color_data_string = GetColorData()
 	# f = open(readColor_path, 'r')
 	# color_data_string = f.read()
@@ -73,7 +64,11 @@ def main():
 	
 	n_cluster = 6
 	model = KMeans_pp(n_cluster)
-	model.fit(RGB_data)
+	try:
+		model.fit(RGB_data)
+	except Exception as e:
+		print(e)
+		return
 	cube_color_ndarray = model.labels_.reshape((-1, 3))
 	print(cube_color_ndarray)
 
@@ -81,6 +76,9 @@ def main():
 	color   = ['r', 'b', 'g', 'c', 'm', 'y', 'k']
 	fig = plt.figure()
 	ax = fig.add_subplot(111, projection='3d')
+	ax.set_xlabel("r", size = 14, color = "r")
+	ax.set_ylabel("g", size = 14, color = "g")
+	ax.set_zlabel("b", size = 14, color = "b")
 	for i in range(n_cluster):
 		p = RGB_data[model.labels_ == i, :]
 		ax.scatter3D(p[:, 0], p[:, 1], p[:, 2], marker = markers[i], color = color[i])
@@ -89,7 +87,11 @@ def main():
 	cube_color = cube_color_ndarray.tolist()
 	DLB_keys = ['D', 'B', 'L']
 	color_of_DBL_dict = dict(zip(DLB_keys, cube_color[4]))
-	color_of_UFR_dict = Identify_Color_of_UFR(copy.deepcopy(cube_color), color_of_DBL_dict)
+	try:
+		color_of_UFR_dict = Identify_Color_of_UFR(copy.deepcopy(cube_color), color_of_DBL_dict)
+	except Exception as e:
+		print(e)
+		return
 	color_of_Side_dict = {**color_of_UFR_dict, **color_of_DBL_dict}
 	print(color_of_Side_dict)
 
@@ -105,19 +107,27 @@ def main():
 	}
 	state_co = [-1 for i in range(8)]
 	state_cp = [-1 for i in range(8)]
-	for i in range(len(cube_color)):
-		if color_of_Side_dict['U'] in cube_color[i]:
-			state_co[i] = cube_color[i].index(color_of_Side_dict['U'])
-		elif color_of_Side_dict['D'] in cube_color[i]:
-			state_co[i] = cube_color[i].index(color_of_Side_dict['D'])
-		part_color_set = set()
-		for color in cube_color[i]:
-			part_color_set.add([k for k, v in color_of_Side_dict.items() if v == color][0])
-		state_cp[i] = part_sets[frozenset(part_color_set)]
+	try:
+		for i in range(len(cube_color)):
+			if color_of_Side_dict['U'] in cube_color[i]:
+				state_co[i] = cube_color[i].index(color_of_Side_dict['U'])
+			elif color_of_Side_dict['D'] in cube_color[i]:
+				state_co[i] = cube_color[i].index(color_of_Side_dict['D'])
+			part_color_set = set()
+			for color in cube_color[i]:
+				part_color_set.add([k for k, v in color_of_Side_dict.items() if v == color][0])
+			state_cp[i] = part_sets[frozenset(part_color_set)]
+	except Exception as e:
+		print(e)
+		return
 	print(state_co)
 	print(state_cp)
 
-	print('finish.')
+	print('finish 1 turn.')
 
 if __name__ == '__main__':
-	main()
+	while True:
+		judgment = input('Ready. Start Connection? [y/n]')
+		if judgment != 'y':
+			break
+		main()

@@ -37,7 +37,8 @@ cs = ColorSensor(Port.S1)
 
 def read_color(index):
 	rgb = cs.rgb()
-	rgb255 = tuple(map(lambda x: x * 2.55, rgb))
+	# rgb255 = tuple(map(lambda x: x * 2.55, rgb))
+	rgb255 = (rgb[0] * 25.5 / 7.06, rgb[1] * 2.55, rgb[2] * 2.55)
 	print('R:' + str(round(rgb255[0], 2)) + ' G:' + str(round(rgb255[1], 2)) + ' B:' + str(round(rgb255[2], 2)))
 	state_rgb[index[0]][index[1]] = rgb255
 
@@ -45,14 +46,15 @@ def read_four(first, second, third, fourth):
 	cmotor.run_until_stalled(S,Stop.COAST,60)
 
 	bmotor.reset_angle(0)
-	bmotor.run_target(S,90,Stop.HOLD)
+	bmotor.run_target(S,80,Stop.HOLD)
 	read_color(first)
-	bmotor.run_target(S,180,Stop.HOLD)
+	bmotor.run_target(S,170,Stop.HOLD)
 	read_color(second)
-	bmotor.run_target(S,270,Stop.HOLD)
+	bmotor.run_target(S,260,Stop.HOLD)
 	read_color(third)
-	bmotor.run_target(S,360,Stop.HOLD)
+	bmotor.run_target(S,350,Stop.HOLD)
 	read_color(fourth)
+	bmotor.run_target(S,360,Stop.HOLD)
 
 	cmotor.run_until_stalled(-S,Stop.BRAKE,100)
 

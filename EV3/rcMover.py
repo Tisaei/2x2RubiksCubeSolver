@@ -30,7 +30,7 @@ hG = 783.991
 amotor = Motor(Port.A)
 bmotor = Motor(Port.B, Direction.COUNTERCLOCKWISE)
 cmotor = Motor(Port.C)
-S = 180 #モーターの回るスピード.
+S = 190 #モーターの回るスピード.
 L = 40  #run_until_stalledメソッドを実行するときのトルクの強さ.
 
 def nsign(num):
@@ -175,7 +175,7 @@ def Dd_move(target): # D
 	reset_motor(L)
 	target_motor(D_target)
 	amotor.stop(Stop.HOLD)
-	bmotor.run_target(S, target+90, Stop.HOLD)
+	bmotor.run_target(S, target+450, Stop.HOLD)
 	return target + 90
 
 def D2_move(target): # D2
@@ -212,28 +212,40 @@ def Yc_move(target): # Y'
 
 def Zd_move(target): # Z
 	target_motor(180)
-	amotor.run_angle(S,-90,Stop.HOLD)
+	amotor.run_angle(S,-130,Stop.HOLD)
+	amotor.run_angle(S,40,Stop.HOLD)
+	amotor.run_angle(S,-40,Stop.HOLD)
 	reset_motor(L)
 	return target
 
 def Z2_move(target): # Z2
 	target_motor(180)
-	amotor.run_angle(S,-90,Stop.HOLD)
+	amotor.run_angle(S,-130,Stop.HOLD)
+	amotor.run_angle(S,40,Stop.HOLD)
+	amotor.run_angle(S,-40,Stop.HOLD)
 	reset_motor(L)
 	target_motor(180)
-	amotor.run_angle(S,-90,Stop.HOLD)
+	amotor.run_angle(S,-130,Stop.HOLD)
+	amotor.run_angle(S,40,Stop.HOLD)
+	amotor.run_angle(S,-40,Stop.HOLD)
 	reset_motor(L)
 	return target
 
 def Zc_move(target): #Z'
 	target_motor(180)
-	amotor.run_angle(S,-90,Stop.HOLD)
+	amotor.run_angle(S,-130,Stop.HOLD)
+	amotor.run_angle(S,40,Stop.HOLD)
+	amotor.run_angle(S,-40,Stop.HOLD)
 	reset_motor(L)
 	target_motor(180)
-	amotor.run_angle(S,-90,Stop.HOLD)
+	amotor.run_angle(S,-130,Stop.HOLD)
+	amotor.run_angle(S,40,Stop.HOLD)
+	amotor.run_angle(S,-40,Stop.HOLD)
 	reset_motor(L)
 	target_motor(180)
-	amotor.run_angle(S,-90,Stop.HOLD)
+	amotor.run_angle(S,-130,Stop.HOLD)
+	amotor.run_angle(S,40,Stop.HOLD)
+	amotor.run_angle(S,-40,Stop.HOLD)
 	reset_motor(L)
 	return target
 
