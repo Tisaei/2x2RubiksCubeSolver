@@ -37,7 +37,6 @@ cs = ColorSensor(Port.S1)
 
 def read_color(index):
 	rgb = cs.rgb()
-	# rgb255 = tuple(map(lambda x: x * 2.55, rgb))
 	rgb255 = (rgb[0] * 25.5 / 7.06, rgb[1] * 2.55, rgb[2] * 2.55)
 	print('R:' + str(round(rgb255[0], 2)) + ' G:' + str(round(rgb255[1], 2)) + ' B:' + str(round(rgb255[2], 2)))
 	state_rgb[index[0]][index[1]] = rgb255

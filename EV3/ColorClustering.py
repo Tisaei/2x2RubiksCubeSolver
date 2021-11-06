@@ -31,7 +31,6 @@ def Identify_Color_of_UFR(cube_color_source, color_of_DBL_dict):
 	
 	return color_of_UFR_dict
 
-from kmeanspp import KMeans_pp
 from kmeans_initSet import kmeans
 import copy
 def Clustering_Main(color_data_string):
@@ -39,10 +38,6 @@ def Clustering_Main(color_data_string):
 
 	print('Clustering... ', end='')
 	n_cluster = 6
-	# model = KMeans_pp(n_cluster)
-	# model.fit(RGB_data)
-	# cube_color_ndarray = model.labels_.reshape((-1, 3))
-	# cube_color = cube_color_ndarray.tolist()
 	center = np.array(
 		[[251, 255, 242], # 白
 		[43, 170, 151], # 緑
@@ -51,7 +46,11 @@ def Clustering_Main(color_data_string):
 		[195, 255, 246], # 橙
 		[133, 42, 18]] # 赤
 	)
-	cube_color_ndarray = kmeans(RGB_data, n_cluster, center, 200).reshape((-1, 3))
+	try:
+		cube_color_ndarray = kmeans(RGB_data, n_cluster, center, 200).reshape((-1, 3))
+	except Exception as e:
+		print(e)
+		return
 	cube_color = cube_color_ndarray.tolist()
 	print('Conmplete!')
 	print(cube_color_ndarray.reshape((-1, 3)))

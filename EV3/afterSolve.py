@@ -1,7 +1,6 @@
 #!/usr/bin/env pybricks-micropython
-from pybricks import ev3brick as brick
 from pybricks.ev3devices import Motor
-from pybricks.parameters import Port, Stop
+from pybricks.parameters import Direction, Port
 from pybricks.tools import print
 import rcMover as rm
 import sys
@@ -26,18 +25,16 @@ hF = 698.456
 hG = 783.991
 
 def fanfare():
-	b_motor = Motor(Port.B)
+	b_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)
 	rm.reset_motor(L)
 	rm.target_motor(200)
 	b_motor.run_angle(90,360)
 
 def main():
-	if len(args) < 3:
-		print("Usage: rcSolver.py (solve way) (per_ori)")
+	if len(args) < 2:
+		print("Usage: rcSolver.py (solve way)")
 		sys.exit()
-	UFR_ways = args[1]
-	per_ori = tuple([int(i) for i in args[2].split(",")])
-	DYZ_ways = rm.UFR_to_DYZ(UFR_ways, per_ori) # rcMoverで動かせるように変換.
+	DYZ_ways = args[1]
 	print("DYZ_ways:", DYZ_ways)
 	rm.execute(DYZ_ways) # rcMoverで動かす.
 	fanfare()
