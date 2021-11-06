@@ -29,9 +29,6 @@ def main():
 	co_str = ','.join(map(str, co))
 	per_ori_str = ','.join(map(str, per_ori))
 	print('cp:', cp_str, ' co:', co_str)
-	judgment = input('continue? [y/n]')
-	if judgment != 'y':
-		return
 
 	print('Solving... ')
 	run(['./rcSolver.out', cp_str, co_str])
@@ -44,7 +41,9 @@ def main():
 
 if __name__ == '__main__':
 	while True:
-		main()
 		judgment = input('Ready. Solve? [y/n]')
 		if judgment != 'y':
-			break
+			really_judgment = input('Really? [y/n]')
+			if really_judgment == 'y':
+				break
+		main()

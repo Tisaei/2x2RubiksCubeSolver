@@ -52,6 +52,7 @@ def Identify_Color_of_UFR(cube_color, color_of_DBL_dict):
 	return color_of_UFR_dict
 
 from kmeanspp import KMeans_pp
+from kmeans_initSet import kmeans
 import copy
 def main():
 	color_data_string = GetColorData()
@@ -63,13 +64,26 @@ def main():
 	print(RGB_data)
 	
 	n_cluster = 6
-	model = KMeans_pp(n_cluster)
+	# model = KMeans_pp(n_cluster)
+	# try:
+	# 	model.fit(RGB_data)
+	# except Exception as e:
+	# 	print(e)
+	# 	return
+	# cube_color_ndarray = model.labels_.reshape((-1, 3))
+	center = np.array(
+		[[251, 255, 242], # 白
+		[43, 170, 151], # 緑
+		[241, 255, 255], # 黄色
+		[37, 122, 135], # 青
+		[195, 255, 246], # 橙
+		[133, 42, 18]] # 赤
+	)
 	try:
-		model.fit(RGB_data)
+		cube_color_ndarray = kmeans(RGB_data, n_cluster, center, 200).reshape((-1, 3))
 	except Exception as e:
 		print(e)
 		return
-	cube_color_ndarray = model.labels_.reshape((-1, 3))
 	print(cube_color_ndarray)
 
 	markers = ['+', '*', '<', 'o', '1', 's', 'd']
@@ -80,7 +94,7 @@ def main():
 	ax.set_ylabel("g", size = 14, color = "g")
 	ax.set_zlabel("b", size = 14, color = "b")
 	for i in range(n_cluster):
-		p = RGB_data[model.labels_ == i, :]
+		p = RGB_data[cube_color_ndarray.ravel() == i, :]
 		ax.scatter3D(p[:, 0], p[:, 1], p[:, 2], marker = markers[i], color = color[i])
 	plt.show()
 

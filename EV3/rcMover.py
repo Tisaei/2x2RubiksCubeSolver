@@ -175,21 +175,24 @@ def Dd_move(target): # D
 	reset_motor(L)
 	target_motor(D_target)
 	amotor.stop(Stop.HOLD)
-	bmotor.run_target(S, target+450, Stop.HOLD)
+	bmotor.run_target(S, target+95, Stop.HOLD)
+	bmotor.run_angle(-S, 5, Stop.HOLD)
 	return target + 90
 
 def D2_move(target): # D2
 	reset_motor(L)
 	target_motor(D_target)
 	amotor.stop(Stop.HOLD)
-	bmotor.run_target(S, target+180, Stop.HOLD)
+	bmotor.run_target(S, target+185, Stop.HOLD)
+	bmotor.run_angle(-S, 5, Stop.HOLD)
 	return target + 180
 
 def Dc_move(target): # D'
 	reset_motor(L)
 	target_motor(D_target)
 	amotor.stop(Stop.HOLD)
-	bmotor.run_target(S, target+270, Stop.HOLD)
+	bmotor.run_target(S, target+275, Stop.HOLD)
+	bmotor.run_angle(-S, 5, Stop.HOLD)
 	return target + 270
 
 def Yd_move(target): # Y

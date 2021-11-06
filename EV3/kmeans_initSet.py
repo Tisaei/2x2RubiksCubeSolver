@@ -6,6 +6,7 @@ def kmeans(X,n_clusters,centers,iter):
     pre_idx = np.ones(X.shape[0])
     count = 0
     while not (idx == pre_idx).all() and count < iter:
+        pre_idx = idx
         #距離の二乗が一番近い中心点のインデックスを返す。
         for i in range(X.shape[0]):
             idx[i] = np.argmin(np.sum((X[i,:] - centers)**2,axis=1))
