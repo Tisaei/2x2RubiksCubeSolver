@@ -6,7 +6,11 @@ import socket
 readColor_path = 'readColor.txt'
 
 def main():
-	run(['./rcReader.py'])
+	try:
+		run(['./rcReader.py'])
+	except KeyboardInterrupt:
+		print('interrupted!')
+		return
 	f = open(readColor_path, 'r')
 	color_data = f.read()
 	f.close()

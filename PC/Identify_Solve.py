@@ -66,7 +66,7 @@ def Clustering(RGB_data):
 		print(e)
 		return None
 
-	ShowResult()
+	# ShowResult()
 
 	return cube_color_ndarray
 
@@ -205,7 +205,7 @@ def main():
 
 		# クラスタリング.
 		cube_color_ndarray = Clustering(RGB_data)
-		if cube_color_ndarray == None:
+		if cube_color_ndarray is None:
 			conn.send("Error Happend!".encode('UTF-8'))
 			conn.close()
 			return
@@ -227,7 +227,7 @@ def main():
 
 		# cp, coの特定.
 		cp, co = Identify_State(cube_color, color_of_Side_dict)
-		if cp == None:
+		if cp is None:
 			conn.send("Error Happend!".encode('UTF-8'))
 			conn.close()
 			return
@@ -236,7 +236,7 @@ def main():
 
 		# 解法の計算.
 		try:
-			run(['./rcSolver.out', cp_str, co_str])
+			run(['./rcSolver.exe', cp_str, co_str])
 			# runメソッドはサブプロセスが終わるまで待ってくれる.
 		except KeyboardInterrupt:
 			print('interrupted!')
