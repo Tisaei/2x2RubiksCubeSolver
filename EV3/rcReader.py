@@ -1,10 +1,9 @@
 #!/usr/bin/env pybricks-micropython
-from pybricks import ev3brick as brick
 from pybricks.ev3devices import Motor, ColorSensor
-from pybricks.parameters import Direction, Port, Stop, Color
-from pybricks.tools import print, wait
+from pybricks.parameters import Direction, Port, Stop
+from pybricks.tools import print
 import rcMover as rm
-import sys
+
 #平均律周波数.
 lG = 195.998
 lA = 220.000
