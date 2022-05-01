@@ -4,26 +4,8 @@ from pybricks.parameters import Direction, Port, Stop
 from pybricks.tools import print
 import rcMover as rm
 
-#平均律周波数.
-lG = 195.998
-lA = 220.000
-lB = 246.942
-dC = 261.626
-dD = 293.665
-dE = 329.628
-dF = 349.228
-dG = 391.995
-dA = 440.000
-dB = 493.883
-hC = 523.251
-hD = 587.330
-hE = 659.255
-hF = 698.456
-hG = 783.991
-
 readColor_path = 'readColor.txt'
-
-S = 230
+S = rm.S
 
 state_rgb = [[(0.0, 0.0, 0.0) for i in range(3)] for j in range(8)]
 state_co = [-1 for i in range(8)]
@@ -84,33 +66,34 @@ def RGB_to_HSV(rgb):
 	return (H, S, V)
 
 def read_all():
-	L = 40  #run_until_stalledメソッドを実行するときのトルクの強さ.
+	L = rm.stall_torque  # run_until_stalledメソッドを実行するときのトルクの強さ.
+	A_target_of_Y = 190  # YするときのAモーターのターゲット.
 	cmotor.run_until_stalled(-S,Stop.BRAKE,100)
 
 	rm.reset_motor(L)
-	rm.target_motor(200)
+	rm.target_motor(A_target_of_Y)
 
 	read_four((1,0), (2,0), (3,0), (0,0))
 	rm.Zd_move(0)
-	rm.target_motor(200)
+	rm.target_motor(A_target_of_Y)
 
 	read_four((5,1), (6,2), (2,1), (1,2))
 	rm.Zd_move(0)
-	rm.target_motor(200)
+	rm.target_motor(A_target_of_Y)
 
 	read_four((4,0), (7,0), (6,0), (5,0))
 	rm.Zd_move(0)
-	rm.target_motor(200)
+	rm.target_motor(A_target_of_Y)
 
 	read_four((0,1), (3,2), (7,1), (4,2))
 	bmotor.reset_angle(0)
 	rm.Yc_move(0)
 	rm.Zd_move(0)
-	rm.target_motor(200)
+	rm.target_motor(A_target_of_Y)
 
 	read_four((2,2), (6,1), (7,2), (3,1))
 	rm.Z2_move(0)
-	rm.target_motor(200)
+	rm.target_motor(A_target_of_Y)
 
 	read_four((0,2), (4,1), (5,2), (1,1))
 	bmotor.reset_angle(0)

@@ -17,6 +17,9 @@ def doZ(now_per_ori): # Zした後のper_oriを求める
 	return (next_per, next_ori)
 
 def direction_change(pre_per_ori, rotate_side):
+	# 入力: pre_per_ori(順列、向きのタプル)、rotate_side(文字列)
+	# 出力: rotate_sideを下にするための手順(文字列)、回した結果のper_ori(順列、向きのタプル)
+
 	if rotate_side == "U":
 		base_per = 0
 	elif rotate_side == "F":
@@ -41,6 +44,10 @@ def direction_change(pre_per_ori, rotate_side):
 			return ("Y Z", temp_per_ori)
 		else:
 			return ("Y3 Z", doZ(doY(doY(doY(pre_per_ori)))))
+
+def add_reset_move(pre_per_ori):
+	# Dした後にこれを呼び出す.
+	return ("Z Y R ", doY(doZ(pre_per_ori)))
 
 def UFR_to_DYZ(UFR_ways, now_po): #now_po = now_per_ori
 	po = now_po
@@ -67,4 +74,9 @@ def UFR_to_DYZ(UFR_ways, now_po): #now_po = now_per_ori
 				DYZ_ways += " D3 "
 			else:
 				DYZ_ways +=  " D "
+			direction_change_info = add_reset_move(po)
+			DYZ_ways += direction_change_info[0]
+			po = direction_change_info[1]
+	if re.match(r"Z Y R $", DYZ_ways):
+		DYZ_ways = DYZ_ways[:-6]
 	return DYZ_ways.strip()

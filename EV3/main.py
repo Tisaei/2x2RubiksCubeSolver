@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
+#from ctypes.wintypes import POINT
 from subprocess import run
 import socket
+
+IP_ADDRESS = '169.254.233.155'
+PORT = 50010
 
 readColor_path = 'readColor.txt'
 
@@ -16,7 +20,8 @@ def main():
 	f.close()
 	print()
 	with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-		s.connect(('169.254.227.203', 50010))
+		s.settimeout(10.0)
+		s.connect((IP_ADDRESS, PORT))
 		s.send(color_data.encode('UTF-8'))
 		recv_data = s.recv(4096).decode()
 		print('"' + recv_data + '"\nfrom PC(server).')
