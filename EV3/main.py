@@ -4,7 +4,7 @@
 from subprocess import run
 import socket
 
-IP_ADDRESS = '169.254.233.155'
+IP_ADDRESS = '169.254.227.203'
 PORT = 50010
 
 readColor_path = 'readColor.txt'
@@ -15,12 +15,15 @@ def main():
 	except KeyboardInterrupt:
 		print('interrupted!')
 		return
+	except Exception as e:
+		print(e)
+		return
 	f = open(readColor_path, 'r')
 	color_data = f.read()
 	f.close()
 	print()
 	with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-		s.settimeout(10.0)
+		#s.settimeout(40.0)
 		s.connect((IP_ADDRESS, PORT))
 		s.send(color_data.encode('UTF-8'))
 		recv_data = s.recv(4096).decode()

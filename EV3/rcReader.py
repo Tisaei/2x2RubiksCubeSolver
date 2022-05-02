@@ -5,7 +5,8 @@ from pybricks.tools import print
 import rcMover as rm
 
 readColor_path = 'readColor.txt'
-S = rm.S
+ac_S = rm.ac_S
+b_S = rm.b_S
 
 state_rgb = [[(0.0, 0.0, 0.0) for i in range(3)] for j in range(8)]
 state_co = [-1 for i in range(8)]
@@ -18,25 +19,25 @@ cs = ColorSensor(Port.S1)
 
 def read_color(index):
 	rgb = cs.rgb()
-	rgb255 = (rgb[0] * 25.5 / 7.06, rgb[1] * 2.55, rgb[2] * 2.55)
-	print('R:' + str(round(rgb255[0], 2)) + ' G:' + str(round(rgb255[1], 2)) + ' B:' + str(round(rgb255[2], 2)))
+	rgb255 = (rgb[0] * 2.55 * 255/180, rgb[1] * 2.55, rgb[2] * 2.55)
+	print('R: {:7.2f} G: {:7.2f} B: {:7.2f}'.format(rgb255[0], rgb255[1], rgb255[2]))
 	state_rgb[index[0]][index[1]] = rgb255
 
 def read_four(first, second, third, fourth):
-	cmotor.run_until_stalled(S,Stop.COAST,60)
+	cmotor.run_until_stalled(ac_S,Stop.HOLD,60)
 
 	bmotor.reset_angle(0)
-	bmotor.run_target(S,80,Stop.HOLD)
+	bmotor.run_target(b_S,80,Stop.HOLD)
 	read_color(first)
-	bmotor.run_target(S,170,Stop.HOLD)
+	bmotor.run_target(b_S,170,Stop.HOLD)
 	read_color(second)
-	bmotor.run_target(S,260,Stop.HOLD)
+	bmotor.run_target(b_S,260,Stop.HOLD)
 	read_color(third)
-	bmotor.run_target(S,350,Stop.HOLD)
+	bmotor.run_target(b_S,350,Stop.HOLD)
 	read_color(fourth)
-	bmotor.run_target(S,360,Stop.HOLD)
+	bmotor.run_target(b_S,360,Stop.HOLD)
 
-	cmotor.run_until_stalled(-S,Stop.BRAKE,100)
+	cmotor.run_until_stalled(-ac_S,Stop.BRAKE,100)
 
 def RGB_to_HSV(rgb):
 	max_value = 0.0
@@ -67,8 +68,8 @@ def RGB_to_HSV(rgb):
 
 def read_all():
 	L = rm.stall_torque  # run_until_stalledメソッドを実行するときのトルクの強さ.
-	A_target_of_Y = 190  # YするときのAモーターのターゲット.
-	cmotor.run_until_stalled(-S,Stop.BRAKE,100)
+	A_target_of_Y = rm.Y_target  # YするときのAモーターのターゲット.
+	cmotor.run_until_stalled(-ac_S,Stop.BRAKE,100)
 
 	rm.reset_motor(L)
 	rm.target_motor(A_target_of_Y)

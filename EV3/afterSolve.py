@@ -5,12 +5,11 @@ from pybricks.tools import print
 import rcMover as rm
 import sys
 args = sys.argv
-stall_torque = rm.stall_torque  #run_until_stalledメソッドを実行するときのトルクの強さ.
 
 def fanfare():
 	b_motor = Motor(Port.B, Direction.COUNTERCLOCKWISE)
-	rm.reset_motor(stall_torque)
-	rm.target_motor(200)
+	rm.reset_motor(rm.stall_torque)
+	rm.target_motor(rm.Y_target)
 	b_motor.run_angle(90,360)
 
 def main():

@@ -35,19 +35,19 @@ def direction_change(pre_per_ori, rotate_side):
 	elif pre_per_ori[0] == (base_per+3) % 6 or pre_per_ori[0] == (base_per+4) % 6:
 		temp_per_ori = doZ(pre_per_ori)
 		if most_ori(temp_per_ori) == 1:
-			return ("Z", temp_per_ori)
+			return ("Z ", temp_per_ori)
 		else:
-			return ("Y2 Z", doZ(doY(doY(pre_per_ori))))
+			return ("Y2 Z ", doZ(doY(doY(pre_per_ori))))
 	else:
 		temp_per_ori = doZ(doY(pre_per_ori))
 		if most_ori(temp_per_ori) == 1:
-			return ("Y Z", temp_per_ori)
+			return ("Y Z ", temp_per_ori)
 		else:
-			return ("Y3 Z", doZ(doY(doY(doY(pre_per_ori)))))
+			return ("Y3 Z ", doZ(doY(doY(doY(pre_per_ori)))))
 
 def add_reset_move(pre_per_ori):
 	# Dした後にこれを呼び出す.
-	return ("Z Y R ", doY(doZ(pre_per_ori)))
+	return ("Z Y3 R ", doY(doY(doY(doZ(pre_per_ori)))))
 
 def UFR_to_DYZ(UFR_ways, now_po): #now_po = now_per_ori
 	po = now_po
@@ -69,14 +69,12 @@ def UFR_to_DYZ(UFR_ways, now_po): #now_po = now_per_ori
 				DYZ_ways += direction_change_info[0]
 				po = direction_change_info[1]
 			if re.match(r"^.2$", move_name):
-				DYZ_ways += " D2 "
+				DYZ_ways += "D2 "
 			elif re.match(r"^.3$", move_name):
-				DYZ_ways += " D3 "
+				DYZ_ways += "D3 "
 			else:
-				DYZ_ways +=  " D "
+				DYZ_ways +=  "D "
 			direction_change_info = add_reset_move(po)
 			DYZ_ways += direction_change_info[0]
 			po = direction_change_info[1]
-	if re.match(r"Z Y R $", DYZ_ways):
-		DYZ_ways = DYZ_ways[:-6]
 	return DYZ_ways.strip()

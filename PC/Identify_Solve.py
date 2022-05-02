@@ -4,8 +4,11 @@ from mpl_toolkits.mplot3d import Axes3D
 import socket
 from subprocess import run
 import re
+import time
 
-IP_ADDRESS = '169.254.233.155'
+from sqlalchemy import false
+
+IP_ADDRESS = '169.254.227.203'
 PORT = 50010
 
 np.set_printoptions(suppress=True)
@@ -42,12 +45,12 @@ def String_to_3d_Ndarray(string_data):
 def Clustering(RGB_data):
 	n_cluster = 6
 	center = np.array(
-		[[251, 255, 242], # 白
-		[43, 170, 151], # 緑
-		[241, 255, 255], # 黄色
-		[37, 122, 135], # 青
-		[195, 255, 246], # 橙
-		[133, 42, 18]] # 赤
+		[[240, 255, 241], # 白
+		[40, 173, 146], # 緑
+		[226, 255, 255], # 黄色
+		[33, 127, 131], # 青
+		[183, 255, 240], # 橙
+		[126, 52, 13]] # 赤
 	)
 
 	def ShowResult():
@@ -61,7 +64,7 @@ def Clustering(RGB_data):
 		for i in range(n_cluster):
 			p = RGB_data[cube_color_ndarray.ravel() == i, :]
 			ax.scatter3D(p[:, 0], p[:, 1], p[:, 2], marker = markers[i], color = color[i])
-		plt.show(block=False)
+		plt.show()
 	
 	try:
 		cube_color_ndarray = kmeans(RGB_data, n_cluster, center, 200).reshape((-1, 3))
@@ -148,23 +151,23 @@ def UFR_to_DYZ(UFR_ways, now_po): #now_po = now_per_ori
 			if most_ori(pre_per_ori) == 1:
 				return ("", pre_per_ori)
 			else:
-				return ("Z2", doZ(doZ(pre_per_ori)))
+				return ("Z2 ", doZ(doZ(pre_per_ori)))
 		elif pre_per_ori[0] == (base_per+3) % 6 or pre_per_ori[0] == (base_per+4) % 6:
 			temp_per_ori = doZ(pre_per_ori)
 			if most_ori(temp_per_ori) == 1:
-				return ("Z", temp_per_ori)
+				return ("Z ", temp_per_ori)
 			else:
-				return ("Y2 Z", doZ(doY(doY(pre_per_ori))))
+				return ("Y2 Z ", doZ(doY(doY(pre_per_ori))))
 		else:
 			temp_per_ori = doZ(doY(pre_per_ori))
 			if most_ori(temp_per_ori) == 1:
-				return ("Y Z", temp_per_ori)
+				return ("Y Z ", temp_per_ori)
 			else:
-				return ("Y3 Z", doZ(doY(doY(doY(pre_per_ori)))))
+				return ("Y3 Z ", doZ(doY(doY(doY(pre_per_ori)))))
 	
 	def add_reset_move(pre_per_ori):
 		# Dした後にこれを呼び出す.
-		return ("Z Y R ", doY(doZ(pre_per_ori)))
+		return ("Z Y3 R ", doY(doY(doY(doZ(pre_per_ori)))))
 
 	po = now_po
 	DYZ_ways = ""
@@ -185,17 +188,15 @@ def UFR_to_DYZ(UFR_ways, now_po): #now_po = now_per_ori
 				DYZ_ways += direction_change_info[0]
 				po = direction_change_info[1]
 			if re.match(r"^.2$", move_name):
-				DYZ_ways += " D2 "
+				DYZ_ways += "D2 "
 			elif re.match(r"^.3$", move_name):
-				DYZ_ways += " D3 "
+				DYZ_ways += "D3 "
 			else:
-				DYZ_ways +=  " D "
+				DYZ_ways +=  "D "
 			direction_change_info = add_reset_move(po)
 			DYZ_ways += direction_change_info[0]
 			po = direction_change_info[1]
-	if re.match(r"Z Y R $", DYZ_ways):
-		DYZ_ways = DYZ_ways[:-6]
-	return DYZ_ways.strip()
+	return DYZ_ways[:-7].strip()
 
 from kmeans_initSet import kmeans
 import copy
@@ -247,15 +248,31 @@ def main():
 		co_str = ','.join(map(str, co))
 
 		# 解法の計算.
+		start_time = time.perf_counter()
 		try:
 			run(['./rcSolver.exe', cp_str, co_str])
 			# runメソッドはサブプロセスが終わるまで待ってくれる.
 		except KeyboardInterrupt:
 			print('interrupted!')
+			print('Solving Time: {:.4f}sec.'.format(time.perf_counter() - start_time))
+			conn.send("Error Happend!".encode('UTF-8'))
+			conn.close()
 			return
+		except Exception as e:
+			print(e)
+			print('Solving Time: {:.4f}sec.'.format(time.perf_counter() - start_time))
+			conn.send("Error Happend!".encode('UTF-8'))
+			conn.close()
+			return
+		print('Solving Time: {:.4f}sec.'.format(time.perf_counter() - start_time))
 		with open(way_path) as f:
 			UFR_ways = f.read()
 
+		if UFR_ways == 'Cannot_Solve!':
+			conn.send("Error Happend!".encode('UTF-8'))
+			conn.close()
+			return
+		
 		# ルービックキューブソルバーで動かせるように変換.
 		DYZ_ways = UFR_to_DYZ(UFR_ways, (0, 0b00))
 
