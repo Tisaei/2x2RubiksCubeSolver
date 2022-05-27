@@ -29,7 +29,7 @@ def main():
 		recv_data = s.recv(4096).decode()
 		print('"' + recv_data + '"\nfrom PC(server).')
 	
-	if recv_data == 'Error Happend!':
+	if recv_data == 'Error Happend!' or recv_data == 'Already_Solved!':
 		return
 	run(['./afterSolve.py', recv_data])
 

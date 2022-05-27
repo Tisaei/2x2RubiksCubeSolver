@@ -45,12 +45,12 @@ def String_to_3d_Ndarray(string_data):
 def Clustering(RGB_data):
 	n_cluster = 6
 	center = np.array(
-		[[240, 255, 241], # 白
-		[40, 173, 146], # 緑
-		[226, 255, 255], # 黄色
-		[33, 127, 131], # 青
-		[183, 255, 240], # 橙
-		[126, 52, 13]] # 赤
+		[[249, 255, 251], # 白
+		[42, 175, 150], # 緑
+		[236, 255, 255], # 黄色
+		[35, 127, 134], # 青
+		[191, 255, 247], # 橙
+		[132, 51, 14]] # 赤
 	)
 
 	def ShowResult():
@@ -64,7 +64,7 @@ def Clustering(RGB_data):
 		for i in range(n_cluster):
 			p = RGB_data[cube_color_ndarray.ravel() == i, :]
 			ax.scatter3D(p[:, 0], p[:, 1], p[:, 2], marker = markers[i], color = color[i])
-		plt.show()
+		plt.show(block=false)
 	
 	try:
 		cube_color_ndarray = kmeans(RGB_data, n_cluster, center, 200).reshape((-1, 3))
@@ -72,7 +72,7 @@ def Clustering(RGB_data):
 		print(e)
 		return None
 
-	ShowResult()
+	# ShowResult()
 
 	return cube_color_ndarray
 
@@ -272,6 +272,9 @@ def main():
 			conn.send("Error Happend!".encode('UTF-8'))
 			conn.close()
 			return
+		elif UFR_ways == 'Already_Solved!':
+			conn.send(DYZ_ways.encode('UTF-8'))
+			conn.close()
 		
 		# ルービックキューブソルバーで動かせるように変換.
 		DYZ_ways = UFR_to_DYZ(UFR_ways, (0, 0b00))

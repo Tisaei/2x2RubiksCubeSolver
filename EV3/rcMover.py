@@ -27,8 +27,8 @@ hG = 783.991
 amotor = Motor(Port.A)
 bmotor = Motor(Port.B, Direction.COUNTERCLOCKWISE)
 cmotor = Motor(Port.C)
-ac_S = 270         #A,Cモーターの回るスピード.
-b_S = 360          #Bモーターの回るスピード.
+ac_S = 300         #A,Cモーターの回るスピード.
+b_S = 400          #Bモーターの回るスピード.
 stall_torque = 40  #run_until_stalledメソッドを実行するときのトルクの強さ.
 
 def nsign(num):
